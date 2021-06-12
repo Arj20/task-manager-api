@@ -1,7 +1,10 @@
+//SENDING WELCOME EMAIL TO NEW USER AND EXITING USER.
+
 const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+//Welcome mail
 const sendWelcomeMail = function (email, name) {
   sgMail.send({
     to: email,
@@ -11,11 +14,12 @@ const sendWelcomeMail = function (email, name) {
   });
 };
 
+//Acoount Deactivation mail.
 const sendCancelationMail = function (email, name) {
   sgMail.send({
     to: email,
     from: "arihant.jain67@gmail.com",
-    subject: `Don't Leave Us!! 😥 ${name}`,
+    subject: `We will miss you!! 😥 ${name}`,
     text: "fais-le will miss you!!",
   });
 };

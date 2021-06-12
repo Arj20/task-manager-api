@@ -1,8 +1,12 @@
+// TASK ROUTER
+
 const express = require("express");
 const auth = require("../middleware/auth");
 const Tasks = require("../models/task");
 const router = new express.Router();
 
+
+// Creating a new task 
 router.post("/tasks", auth, async (req, res) => {
   const task = new Tasks({
     ...req.body,
@@ -17,7 +21,7 @@ router.post("/tasks", auth, async (req, res) => {
 });
 
 
-
+//Fetching a list of all tasks
 router.get("/tasks", auth, async (req, res) => {
   match = {};
   sort = {};
@@ -49,6 +53,7 @@ router.get("/tasks", auth, async (req, res) => {
   }
 });
 
+//Fetching a single task
 router.get("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id.trim();
   // const task = await Tasks.findById(_id);
@@ -64,6 +69,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+//Updating an existing task.
 router.patch("/tasks/:id", auth, async (req, res) => {
   const Updates = Object.keys(req.body);
   const allowedUpdates = ["description", "completed"];
@@ -85,6 +91,7 @@ router.patch("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+//Deleting a task.
 router.delete("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
@@ -100,4 +107,5 @@ router.delete("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+//Exporting router
 module.exports = router;

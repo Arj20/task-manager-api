@@ -1,9 +1,12 @@
+// USER MODEL
+
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Tasks = require("./task");
 
+//Creating User Schema
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -123,4 +126,5 @@ userSchema.pre("remove", async function (next) {
 
 const User = mongoose.model("User", userSchema);
 
+//Exporting module
 module.exports = User;

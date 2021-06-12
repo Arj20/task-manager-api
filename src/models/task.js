@@ -1,6 +1,9 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+// TASK MODEL
 
+const mongoose = require("mongoose");
+// const validator = require("validator");
+
+// Creating task Schema
 const taskSchema = mongoose.Schema(
   {
     description: {
@@ -25,4 +28,5 @@ const taskSchema = mongoose.Schema(
 
 const Tasks = mongoose.model("Task", taskSchema);
 
+//Exporting module
 module.exports = Tasks;

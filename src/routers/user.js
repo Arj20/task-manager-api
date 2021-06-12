@@ -1,11 +1,15 @@
+//USER ROUTER
+
 const express = require("express");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 const router = new express.Router();
 const multer = require("multer");
 const sharp = require("sharp");
+//IMPORTING MESSAGE MODULE
 const { sendWelcomeMail, sendCancelationMail } = require("../emails/account");
 
+//Creating new User.
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
 
@@ -19,6 +23,7 @@ router.post("/users", async (req, res) => {
   }
 });
 
+//Login to the application.
 router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
@@ -32,6 +37,7 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
+//Upload object for attaching files,images etc.
 let upload = multer({
   limits: {
     fileSize: 1000000,
@@ -44,6 +50,7 @@ let upload = multer({
   },
 });
 
+//Uploading single image.
 router.post(
   "/users/me/avatar",
   auth,
@@ -62,12 +69,14 @@ router.post(
   }
 );
 
+//Deleting image of the logged in User.
 router.delete("/users/me/avatar", auth, async (req, res) => {
   req.user.avatar = undefined;
   await req.user.save();
   res.send();
 });
 
+//Deleting image of any User.
 router.get("/users/:id/avatar", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -81,6 +90,7 @@ router.get("/users/:id/avatar", async (req, res) => {
   }
 });
 
+//Logging out of single device only.
 router.post("/users/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter(
@@ -93,6 +103,7 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
+//Logging out of all the devices.
 router.post("/users/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
@@ -103,10 +114,12 @@ router.post("/users/logoutAll", auth, async (req, res) => {
   }
 });
 
+// Getting profile details of the logged in User.
 router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
+// Fetching other Users Details.
 router.get("/users/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -123,6 +136,7 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
+//Updating my profile details
 router.patch("/users/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "password", "age"];
@@ -146,6 +160,7 @@ router.patch("/users/me", auth, async (req, res) => {
   }
 });
 
+//Deleting my Account.
 router.delete("/users/me", auth, async (req, res) => {
   try {
     sendCancelationMail(req.user.email, req.user.name);
@@ -156,4 +171,5 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 });
 
+//Exporting Router.
 module.exports = router;
