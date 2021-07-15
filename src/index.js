@@ -10,7 +10,7 @@ const app = express();
 //Port is given by the environment.
 const port = process.env.PORT || 3000;
 
-//Using middleware.
+//Using middleware to accept request in json format.
 app.use(express.json());
 
 //Using User Router.
